@@ -22,10 +22,16 @@ Route::get('/', function () {
 		Route::get('padrino/{id}/inhabilitar','METADATO_PADRINOS_Controller@inhabilitarRegistro')->name('padrino.borrar');
 		Route::get('padrino/nuevo-padrino/elige-sector','METADATO_PADRINOS_Controller@eligeSector')->name('padrino.eligesec');
 		Route::post('padrino/nuevo-padrino','METADATO_PADRINOS_Controller@nuevoPadrino')->name('padrino.nuevo');
+		Route::get('padrino/pendiente-alta','METADATO_PADRINOS_Controller@pendientesAlta')->name('padrino.pendientes');
 
-		Route::get('padrino/nuevo-padrino-app/','METADATO_PADRINOS_Controller@crearPadrinoAPP')->name('padrino.crear-nuevo');
-		Route::get('padrino/sector-padrino-app/','METADATO_PADRINOS_Controller@sectorAPP')->name('padrino.padrino-sector');
-		Route::post('padrino/nuevo-padrino/app','METADATO_PADRINOS_Controller@nuevoPadrinoAPP')->name('padrino.nuevo-app');
+		Route::get('padrino/app/','PRE_ALTA_Controller@inicioPadrinosApp')->name('padrino.inicio-app');
+		Route::get('padrino/nuevo-padrino-app/','PRE_ALTA_Controller@crearPadrinoAPP')->name('padrino.crear-nuevo');
+		Route::get('padrino/sector-padrino-app/','PRE_ALTA_Controller@sectorAPP')->name('padrino.padrino-sector');
+		Route::post('padrino/nuevo-padrino/app','PRE_ALTA_Controller@nuevoPadrinoAPP')->name('padrino.nuevo-app');
+		Route::post('padrino/nuevo-padrino/iniciativa-privada/app','PRE_ALTA_Controller@nuevoPadrinoIPAPP')->name('padrino.nuevo-ip-app');
+		Route::get('padrino/login/','PRE_ALTA_Controller@vistaLogin')->name('padrino.inicio-login');
+		Route::post('padrino/login/app','PRE_ALTA_Controller@loginPadrinoApp')->name('padrino.login-app');
+		Route::get('padrino/sectores','PRE_ALTA_Controller@apiSectores')->name('padrino.sectores');
 		
 		Route::resource('usuario','FURWEB_CTRL_ACCESO_13_Controller');
 		Route::resource('padrino','METADATO_PADRINOS_Controller');

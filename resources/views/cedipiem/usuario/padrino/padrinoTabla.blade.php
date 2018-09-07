@@ -57,8 +57,9 @@
 										{!! Form::submit('Mostrar',['class' => 'btn btn-success']) !!}
 										<!--<a href=" {{ route('padrino.ver') }}" class="btn btn-success">Mostrar</a>-->
 										{!! Form::close() !!}
-									<a href="{{ route('padrino.create') }}" class="offset-md-3 btn btn-secondary" title="Reiniciar búsqueda"><i class="fa fa-search"></i> Reiniciar búsqueda</a>
+									<a href="{{ route('padrino.create') }}" class="offset-md-2 btn btn-secondary" title="Reiniciar búsqueda"><i class="fa fa-search"></i> Búsqueda</a>
 									<a href="{{ route('padrino.index') }}" class="offset-md-0 btn btn-primary" title="Dar de alta un nuevo padrino"><i class="fa fa-address-card"></i> Nuevo</a>
+									<a href="{{ route('padrino.pendientes') }}" class="btn btn-danger" title="Padrinos pendientes por dar de alta"><i class="fa fa-address-book"></i> Pendientes</a>
 									</div>
 								</div>
 							

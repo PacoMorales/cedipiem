@@ -7,6 +7,7 @@ use App\Http\Requests\METADATO_PADRINOS_Request;
 use Laracasts\Flash\Flash;
 use App\LU_CLASIFICGOB;
 use App\METADATO_PADRINOS;
+use App\METADATO_PADRINOS_PRE_ALTA;
 use App\FURWEB_DIARIO_13;
 use App\ASIGNACION_PADRINO_AHIJADO;
 use App\CAT_PROGRAMAS;
@@ -356,64 +357,9 @@ class METADATO_PADRINOS_Controller extends Controller
         dd($request->all());
     }
 
-    public function crearPadrinoAPP(){
-        $clasificgob = LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','asc')->get();
-        $programa    = CAT_PROGRAMAS::find(13);
-        return view('cedipiem.usuario.padrino.app.registro',compact('clasificgob','programa'));
-    }
-
-    public function sectorAPP(Request $request){
-        $estrucgob   = LU_ESTRUCGOB::where('ESTRUCGOB_ID','LIKE','%'.$request->estruc.'%')->get();
-        $estruc = $estrucgob[0];                                     
-        $hoy         = date('d/m/Y');
-        $clasificgob = LU_CLASIFICGOB::find($request->select_dep);
-        $programa    = CAT_PROGRAMAS::find(13);
-        if(is_numeric($request->select_dep)){
-            //dd('Todo oc');
-            if($request->select_dep==0){
-                return back()->withErrors(['FOLIO' => 'Por favor, elije una opción.']);
-                //$dependencias = LU_DEPENDENCIAS::where('CLASIFICGOB_ID',$request->select_dep)->orderBy('DEPEN_DESC','ASC')->get();
-                //return view('cedipiem.usuario.padrino.nuevoRegistro',compact('clasificgob','programa','dependencias','hoy'));
-            }else{
-                if($request->select_dep==1){//SI ES 1 (SECTOR CENTRAL)
-                    $dependencias = LU_DEPENDENCIAS::where('ESTRUCGOB_ID','LIKE','%'.$request->estruc.'%')->orderBy('DEPEN_DESC','ASC')->get();
-                    return view('cedipiem.usuario.padrino.app.nuevoRegistroAPP',compact('clasificgob','programa','dependencias','hoy','estruc'));
-                }else{
-                    if($request->select_dep==2){//SI ES 2 (ORGANISMO AUXILIAR)
-                        $dependencias = LU_DEPENDENCIAS::where('ESTRUCGOB_ID','LIKE','%'.$request->estruc.'%')->orderBy('DEPEN_DESC','ASC')->get();
-                        //$estruc       = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$request->select_dep)->orderBy('ESTRUCGOB_DESC','ASC')->get();
-                        return view('cedipiem.usuario.padrino.app.nuevoRegistroAPP',compact('clasificgob','programa','dependencias','hoy','estruc'));
-                    }else{
-                        if($request->select_dep==3){//SI ES 3 (AYUNTAMIENTOS)
-                            $dependencias = CAT_MUNICIPIOS_SEDESEM::where('ENTIDADFEDERATIVAID',15)->where('MUNICIPIOID',$request->estruc)->orderBy('MUNICIPIONOMBRE','ASC')->get();
-                            $depend=$dependencias[0];
-                            return view('cedipiem.usuario.padrino.app.nuevoRegistroAyuntamientosAPP',compact('clasificgob','programa','dependencias','hoy','depend'));
-                        }else{
-                            if($request->select_dep==4){//SI ES 4 (ORGANISMO INDEPENDIENTE)
-                                $dependencias = LU_DEPENDENCIAS::where('ESTRUCGOB_ID','LIKE','%'.$request->estruc.'%')->orderBy('DEPEN_DESC','ASC')->get();
-                                //$estruc       = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$request->select_dep)->orderBy('ESTRUCGOB_DESC','ASC')->get(); 
-                                return view('cedipiem.usuario.padrino.app.nuevoRegistroAPP',compact('clasificgob','programa','dependencias','hoy','estruc'));
-                            }else{
-                                if($request->select_dep==5){//SI ES 5 (INICIATIVA PRIVADA)
-                                    return view('cedipiem.usuario.padrino.app.nuevoRegistroIPAPP',compact('clasificgob','programa','hoy'));
-                                }else{
-                                    return back()->withErrors(['FOLIO' => 'Ha ocurrido algo inesperado. Por favor, elije una opción.']);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
-            return back()->withErrors(['FOLIO' => 'Por favor, elije una opción.']);
-        }
-    }
-
-    public function nuevoPadrinoAPP(Request $request){
-        //dd($request->all());
-        Flash::success("La información del padrino ".$request->NOMBRES." fue registrada correctamente.")->important();
-        return view('cedipiem.usuario.login.registro');
-
+    public function pendientesAlta(){
+        $pendientes = METADATO_PADRINOS_PRE_ALTA::where('STATUS_4','E')->get();
+        dd($pendientes->all());
     }
 
     public function update(Request $request, $id){}

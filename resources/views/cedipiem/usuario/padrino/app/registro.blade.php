@@ -59,7 +59,7 @@
 								<div class="form-group row mb-0">
 									<div class="col-md-6 offset-md-5">
 										{!! Form::submit('Continuar',['class' => 'btn btn-success']) !!}
-										<!--<a href=" {{ route('padrino.ver') }}" class="btn btn-success">Mostrar</a>-->
+										<!--<a href="#" class="btn btn-success">Mostrar</a>-->
 									</div>
 								</div>
 							{!! Form::close() !!}						
