@@ -13,11 +13,13 @@ class LU_ESTRUCGOB extends Model
     protected $fillable = [
 	    'ESTRUCGOB_ID', 
 	    'ESTRUCGOB_DESC',
-        'CLASIFICGOB_ID'
+        'CLASIFICGOB_ID',
+        'DEPENGOB_ID'
     ];
 
     public static function obtenerEstructuras($id){
-    	return LU_ESTRUCGOB::where('CLASIFICGOB_ID',$id)
+    	return LU_ESTRUCGOB::select('ESTRUCGOB_ID','ESTRUCGOB_DESC','DEPENGOB_ID')
+                              ->where('CLASIFICGOB_ID',$id)
                               ->orderBy('ESTRUCGOB_DESC','ASC')
                               ->get();
     }

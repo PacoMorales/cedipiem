@@ -15,10 +15,11 @@ class LU_DEPENDENCIAS extends Model
 	    'DEPEN_DESC'
     ];
 
-    public static function obtenerDependencias($id)
+    public static function obtenerDependencia($id)
     {
-    	return LU_DEPENDENCIAS::where('ESTRUCGOB_ID',$id)
-                              ->orderBy('DEPEN_DESC','ASC')
+    	return LU_DEPENDENCIAS::select('DEPEN_ID','DEPEN_DESC','ESTRUCGOB_ID','CLASIFICGOB_ID')
+                              ->where('DEPEN_ID','like','%'.$id.'%')
+                              //->orderBy('DEPEN_DESC','ASC')
                               ->get();
     }
 }

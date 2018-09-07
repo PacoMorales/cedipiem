@@ -16,7 +16,7 @@
 						 		<div class="justify-content-center">
 									<div class="mol-md-0">
 										<div class="card">
-											<div class="card-header" style="background-image: url('/images/ANI.jpeg'); width: 100%; height: 100;">
+											<div class="card-header">
 												<div class = "form-group  justify-content-center  text-md-center row">
 													<a href="{{ route('padrino.crear-nuevo') }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Regístrate aquí</a>
 												</div>

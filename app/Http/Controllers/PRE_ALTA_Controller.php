@@ -24,6 +24,14 @@ class PRE_ALTA_Controller extends Controller
 		return response()->json(LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','ASC')->get());
 	}
 
+    public function apiEstructura($id){
+        return response()->json(LU_ESTRUCGOB::obtenerEstructuras($id)); 
+    }
+
+    public function apiDependencia($id){
+        return response()->json(LU_DEPENDENCIAS::obtenerDependencia($id)); 
+    }
+
 	public function inicioPadrinosApp(){
         //$programa    = CAT_PROGRAMAS::find(13);
         return view('cedipiem.usuario.padrino.app.inicio');

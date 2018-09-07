@@ -31,8 +31,11 @@ Route::get('/', function () {
 		Route::post('padrino/nuevo-padrino/iniciativa-privada/app','PRE_ALTA_Controller@nuevoPadrinoIPAPP')->name('padrino.nuevo-ip-app');
 		Route::get('padrino/login/','PRE_ALTA_Controller@vistaLogin')->name('padrino.inicio-login');
 		Route::post('padrino/login/app','PRE_ALTA_Controller@loginPadrinoApp')->name('padrino.login-app');
+/**************************************************************************************************************************/
 		Route::get('padrino/sectores','PRE_ALTA_Controller@apiSectores')->name('padrino.sectores');
-		
+		Route::get('padrino/sectores/estructuras/{id}','PRE_ALTA_Controller@apiEstructura')->name('padrino.estructuras');
+		Route::get('padrino/sectores/estructuras/dependencia/{id}','PRE_ALTA_Controller@apiDependencia')->name('padrino.dependencia');
+/**************************************************************************************************************************/
 		Route::resource('usuario','FURWEB_CTRL_ACCESO_13_Controller');
 		Route::resource('padrino','METADATO_PADRINOS_Controller');
 		Route::get('centro-trabajo/mantenimiento/','CENTRO_TRABAJO_Controller@eligeCentro')->name('centro-trabajo.ver');
