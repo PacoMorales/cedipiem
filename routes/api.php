@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('padrino/nuevo-padrino/app','PRE_ALTA_Controller@nuevoPadrinoAPP')->name('padrino.nuevo-app');
