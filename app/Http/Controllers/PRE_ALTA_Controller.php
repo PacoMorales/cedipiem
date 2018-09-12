@@ -21,7 +21,7 @@ use App\CAT_VIGENCIA_PROGRAMAS;
 class PRE_ALTA_Controller extends Controller
 {
 	public function apiSectores(){
-		return response()->json(LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','ASC')->get());
+		return response()->json(LU_CLASIFICGOB::where("CLASIFICGOB_ID",'>',0)->where("CLASIFICGOB_ID",'<',5)->orderBy('CLASIFICGOB_ID','ASC')->get());
 	}
 
     public function apiEstructura($id){
