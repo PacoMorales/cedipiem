@@ -100,6 +100,7 @@ class PRE_ALTA_Controller extends Controller
     }
 
     public function nuevoPadrinoAPP(Request $request){
+        //dd($request->all());
         do{
             $aux    = mt_rand(5000000,25000000);
             $var = false;
@@ -113,23 +114,27 @@ class PRE_ALTA_Controller extends Controller
         $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
         //dd($rfc);
         if($rfc->count()>=1){
-        	//dd('encontro');
+        	dd('entro RFC');
         	return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
         }
         $nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
         if($nombre->count() >= 1){
+            dd('entro NOMBRE');
             return back()->withErrors(['RFC' => 'El NOMBRE: '.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.' ya ha sido ingresado, por favor verifica si no ha sido un error de escritura.']);
         }
         if($request->OPCION1 == $request->OPCION2 OR $request->OPCION2 == $request->OPCION3 OR $request->OPCION1 == $request->OPCION3){
+            dd('entro OPCION');
         	return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
         }
-        $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_DESC','like','%'.$request->SECTOR.'%')->get();
+        $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_ID',$request->SECTOR)->get();
         if($clasif->count() <= 0){
+            dd('NO enCONtro CLASIFICACION');
             return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   
         }
         $clasificgob=$clasif[0];
-        $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_DESC','like','%'.$request->ESTRUCTURA.'%')->get();
+        $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_ID','like','%'.$request->ESTRUCTURA.'%')->get();
         if($estruc->count() <= 0){
+            dd('NO ENCONTRO ESTRUCTURA ');
             return back()->withErrors(['FOLIO' => 'Un error con la estructura.']);   
         }
         $estrucgob=$estruc[0];
@@ -153,7 +158,7 @@ class PRE_ALTA_Controller extends Controller
         $nuevo->CP = strtoupper($request->CP);
         $nuevo->DIRECCION_LAB = strtoupper($request->CALLE.' '.$request->NUM_EXT.' '.$request->NUM_INT);
         $nuevo->LADA_LAB = strtoupper($request->LADA);
-        $nuevo->TELEFONO_LAB = strtoupper($request->TELEFONO);
+        $nuevo->TELEFONO_LAB = (int)$request->TELEFONO;
         $nuevo->CORREO_ELECT = $request->CORREO;
         $nuevo->N_PERIODO = date('Y');
         $nuevo->STATUS_4 = 'E';
@@ -167,6 +172,7 @@ class PRE_ALTA_Controller extends Controller
         $nuevo->CVE_MUNICIPIO_OPC2 = strtoupper($request->OPCION2);
         $nuevo->CVE_MUNICIPIO_OPC3 = strtoupper($request->OPCION3);
         $nuevo->FECHA_REG = date('Y/m/d');
+        //dd('A GUARDAR');
         $nuevo->save();
         Flash::success("La información del PADRINO: ".$request->NOMBRES." con CLAVE DE PADRINO: ".$aux." fue registrada correctamente.")->important();
         $programa    = CAT_PROGRAMAS::find(13);
