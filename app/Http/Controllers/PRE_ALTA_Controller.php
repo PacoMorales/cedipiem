@@ -115,19 +115,27 @@ class PRE_ALTA_Controller extends Controller
         if($rfc->count()>=1){
         	//dd('encontro');
         	return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
-        }/*else{
-        	dd('no encontro');
-        }*/
+        }
+        $nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
+        if($nombre->count() >= 1){
+            return back()->withErrors(['RFC' => 'El NOMBRE: '.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.' ya ha sido ingresado, por favor verifica si no ha sido un error de escritura.']);
+        }
         if($request->OPCION1 == $request->OPCION2 OR $request->OPCION2 == $request->OPCION3 OR $request->OPCION1 == $request->OPCION3){
         	return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
         }
         $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_DESC','like','%'.$request->SECTOR.'%')->get();
+        if($clasif->count() <= 0){
+            return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   
+        }
         $clasificgob=$clasif[0];
         $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_DESC','like','%'.$request->ESTRUCTURA.'%')->get();
+        if($estruc->count() <= 0){
+            return back()->withErrors(['FOLIO' => 'Un error con la estructura.']);   
+        }
         $estrucgob=$estruc[0];
         $nuevo = new METADATO_PADRINOS_PRE_ALTA();
-        $nuevo->CVE_SP = strtoupper($request->CVE_SERV_PUBLICO);
-        $nuevo->CVE_PADRINO = $aux;
+        $nuevo->CVE_SP = (int)$request->CVE_SERV_PUBLICO;
+        $nuevo->CVE_PADRINO = (int)$aux;
         $nuevo->CLASIFICGOB_ID = $clasificgob->clasificgob_id;
         $nuevo->APELLIDO_PATERNO = strtoupper($request->PATERNO);
         $nuevo->APELLIDO_MATERNO = strtoupper($request->MATERNO);
