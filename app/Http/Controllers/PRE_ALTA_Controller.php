@@ -156,7 +156,7 @@ class PRE_ALTA_Controller extends Controller
         $nuevo->RFC = strtoupper($request->RFC);
         $nuevo->ESTRUCGOB_ID = $estrucgob->estrucgob_id;
         $nuevo->CVE_DEPENDENCIA = strtoupper($request->DEPENDENCIA);
-        $nuevo->INSTITUCION = strtoupper($request->INSTITUCION)
+        $nuevo->INSTITUCION = strtoupper($request->INSTITUCION);
         $nuevo->UNIDAD_ADMIN = strtoupper($request->UNIDAD);
         $nuevo->CARGO = strtoupper($request->CARGO);
         $nuevo->COLONIA = strtoupper($request->COLONIA);
