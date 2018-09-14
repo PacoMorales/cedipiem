@@ -112,25 +112,29 @@ class PRE_ALTA_Controller extends Controller
             }
         }while($var == false);
         $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
-        //dd($rfc);
+        //Error 505;
         if($rfc->count()>=1){
         	dd('entro RFC');
         	return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
         }
+        //Esto entra como un error ?
         $nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
         if($nombre->count() >= 1){
             dd('entro NOMBRE');
             return back()->withErrors(['RFC' => 'El NOMBRE: '.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.' ya ha sido ingresado, por favor verifica si no ha sido un error de escritura.']);
         }
+        //Error 535
         if($request->OPCION1 == $request->OPCION2 OR $request->OPCION2 == $request->OPCION3 OR $request->OPCION1 == $request->OPCION3){
             dd('entro OPCION');
         	return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
         }
+        //Error 515
         $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_ID',$request->SECTOR)->get();
         if($clasif->count() <= 0){
             dd('NO enCONtro CLASIFICACION');
             return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   
         }
+        //Error 525
         $clasificgob=$clasif[0];
         $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_ID','like','%'.$request->ESTRUCTURA.'%')->get();
         if($estruc->count() <= 0){
@@ -152,6 +156,7 @@ class PRE_ALTA_Controller extends Controller
         $nuevo->RFC = strtoupper($request->RFC);
         $nuevo->ESTRUCGOB_ID = $estrucgob->estrucgob_id;
         $nuevo->CVE_DEPENDENCIA = strtoupper($request->DEPENDENCIA);
+        $nuevo->INSTITUCION = strtoupper($request->INSTITUCION)
         $nuevo->UNIDAD_ADMIN = strtoupper($request->UNIDAD);
         $nuevo->CARGO = strtoupper($request->CARGO);
         $nuevo->COLONIA = strtoupper($request->COLONIA);
