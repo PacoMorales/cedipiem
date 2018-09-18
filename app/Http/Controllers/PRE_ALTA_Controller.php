@@ -114,32 +114,37 @@ class PRE_ALTA_Controller extends Controller
         $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
         //Error 505;
         if($rfc->count()>=1){
-        	dd('entro RFC');
-        	return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
+        	//dd('entro RFC');
+        	//return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
+            return (['Error'=>'505','Mensaje: '=>'El RFC esta duplicado.']);
         }
         //Esto entra como un error ?
-        $nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
+        /*$nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
         if($nombre->count() >= 1){
-            dd('entro NOMBRE');
-            return back()->withErrors(['RFC' => 'El NOMBRE: '.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.' ya ha sido ingresado, por favor verifica si no ha sido un error de escritura.']);
-        }
+            //dd('entro NOMBRE');
+            //return back()->withErrors(['RFC' => 'El NOMBRE: '.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.' ya ha sido ingresado, por favor verifica si no ha sido un error de escritura.']);
+            return (['Error'=>'','Mensaje: '=>'El RFC esta duplicado.']);
+        }*/
         //Error 535
         if($request->OPCION1 == $request->OPCION2 OR $request->OPCION2 == $request->OPCION3 OR $request->OPCION1 == $request->OPCION3){
-            dd('entro OPCION');
-        	return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
+            //dd('entro OPCION');
+        	//return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
+            return (['Error'=>'535','Mensaje: '=>'Los municipios a apadrinar están duplicados']);
         }
         //Error 515
         $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_ID',$request->SECTOR)->get();
         if($clasif->count() <= 0){
-            dd('NO enCONtro CLASIFICACION');
-            return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   
+            /*dd('NO enCONtro CLASIFICACION');
+            return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   */
+            return (['Error'=>'515','Mensaje: '=>'La clasificación ingresada es incorrecta.']);
         }
         //Error 525
         $clasificgob=$clasif[0];
         $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_ID','like','%'.$request->ESTRUCTURA.'%')->get();
         if($estruc->count() <= 0){
-            dd('NO ENCONTRO ESTRUCTURA ');
-            return back()->withErrors(['FOLIO' => 'Un error con la estructura.']);   
+            //dd('NO ENCONTRO ESTRUCTURA ');
+            //return back()->withErrors(['FOLIO' => 'Un error con la estructura.']);   
+            return (['Error'=>'525','Mensaje: '=>'La estructura gubernamental es incorrecta.']);
         }
         $estrucgob=$estruc[0];
         $nuevo = new METADATO_PADRINOS_PRE_ALTA();
@@ -179,9 +184,10 @@ class PRE_ALTA_Controller extends Controller
         $nuevo->FECHA_REG = date('Y/m/d');
         //dd('A GUARDAR');
         $nuevo->save();
-        Flash::success("La información del PADRINO: ".$request->NOMBRES." con CLAVE DE PADRINO: ".$aux." fue registrada correctamente.")->important();
-        $programa    = CAT_PROGRAMAS::find(13);
-        return view('cedipiem.usuario.padrino.app.aviso',compact('programa'));
+        return (['Ok'=>'200','Mensaje: '=>'Registro agregado correctamente.']);
+        //Flash::success("La información del PADRINO: ".$request->NOMBRES." con CLAVE DE PADRINO: ".$aux." fue registrada correctamente.")->important();
+        //$programa    = CAT_PROGRAMAS::find(13);
+        //return view('cedipiem.usuario.padrino.app.aviso',compact('programa'));
     }
 
     /*public function nuevoPadrinoIPAPP(Request $request){
