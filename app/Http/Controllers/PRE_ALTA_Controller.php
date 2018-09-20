@@ -138,7 +138,7 @@ class PRE_ALTA_Controller extends Controller
         if($clasif->count() <= 0){
             /*dd('NO enCONtro CLASIFICACION');
             return back()->withErrors(['FOLIO' => 'Un error con la clasificacion.']);   */
-            return 515
+            return 515;
             //return (['Error'=>'515','Mensaje: '=>'La clasificación ingresada es incorrecta.']);
         }
         //Error 525

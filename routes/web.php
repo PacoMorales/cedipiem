@@ -32,7 +32,7 @@ Route::get('/', function () {
 		Route::get('padrino/login/','PRE_ALTA_Controller@vistaLogin')->name('padrino.inicio-login');
 		Route::post('padrino/login/app','PRE_ALTA_Controller@loginPadrinoApp')->name('padrino.login-app');
 /**************************************************************************************************************************/
-		Route::get('padrino/municipios','PRE_ALTA_Controller@apiMunicipios')->name('padrino.municipios');
+		Route::get('padrino/municipios','PRE_ALTA_Controller@apiMunicipios')->name('padrino.municipios'); 
 		Route::get('padrino/sectores','PRE_ALTA_Controller@apiSectores')->name('padrino.sectores');
 		Route::get('padrino/sectores/estructuras/{id}','PRE_ALTA_Controller@apiEstructura')->name('padrino.estructuras');
 		Route::get('padrino/sectores/estructuras/dependencia/{id}','PRE_ALTA_Controller@apiDependencia')->name('padrino.dependencia');
