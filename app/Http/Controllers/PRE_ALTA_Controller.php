@@ -16,6 +16,7 @@ use App\CAT_GRADO_ESTUDIOS;
 use App\CAT_MUNICIPIOS_SEDESEM;
 use App\CAT_MUNICIPIOS;
 use App\LU_ESTRUCGOB;
+use App\LU_CAT_QUINCENAS;
 use App\LU_DEPENDENCIAS;
 use App\CAT_VIGENCIA_PROGRAMAS;
 
@@ -34,10 +35,11 @@ class PRE_ALTA_Controller extends Controller
     }
 
     public function apiMunicipios(){
-        /*$mun = CAT_MUNICIPIOS::all();
-        echo '<pre>';
-        var_dump($mun); die;*/
         return response()->json(CAT_MUNICIPIOS_SEDESEM::Municipios()); 
+    }
+
+    public function apiQuincenas(){
+        return response()->json(LU_CAT_QUINCENAS::Quincenas());
     }
 
 	public function inicioPadrinosApp(){
