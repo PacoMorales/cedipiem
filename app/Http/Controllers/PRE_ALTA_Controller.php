@@ -113,13 +113,38 @@ class PRE_ALTA_Controller extends Controller
                 $var = false;
             }
         }while($var == false);
-        $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
-        //Error 505;
-        if($rfc->count()>=1){
-        	//dd('entro RFC');
-        	//return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
-            return '505';
-            //return (['Error'=>'505','Mensaje: '=>'El RFC esta duplicado.']);
+    // VALIDACION RECIBO DEDUCIBLE => SI & RFC => NULO
+        if($request->RFC==NULL AND $request->RECIBO_DEDUCIBLE=='S' AND $request->SECTOR==5){
+            return '545';
+        }
+    // VALIDACION TELEFONO
+        $tel_aux = (string)$request->LADA.(string)$request->TELEFONO;
+        if(strlen($tel_aux) != 10){
+            return '555';
+        }
+    // VALIDACION SECTOR PUBLICO
+        if($request->SECTOR != 5){
+            $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
+            //Error 505;
+            if($rfc->count()>=1){
+                //dd('entro RFC');
+                //return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
+                return '505';
+                //return (['Error'=>'505','Mensaje: '=>'El RFC esta duplicado.']);
+            }
+        }else{
+            if($request->SECTOR == 5){
+                if($request->RFC != NULL){
+                    $rfc = METADATO_PADRINOS_PRE_ALTA::where('RFC','like','%'.$request->RFC.'%')->get();
+                    //Error 505;
+                    if($rfc->count()>=1){
+                        //dd('entro RFC');
+                        //return back()->withErrors(['RFC' => 'El RFC: '.$request->RFC.' está duplicado, por favor verifica si no ha sido un error de escritura.']);
+                        return '505';
+                        //return (['Error'=>'505','Mensaje: '=>'El RFC esta duplicado.']);
+                    }
+                }
+            }
         }
         //Esto entra como un error ?
         /*$nombre = METADATO_PADRINOS_PRE_ALTA::where('NOMBRE_COMPLETO','like','%'.$request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES.'%')->get();
@@ -268,5 +293,14 @@ class PRE_ALTA_Controller extends Controller
     	}else{
     		return back()->withErrors(['FOLIO' => 'Al parecer aún no te han dado de alta. Por favor mantente al pendiente de tu correo electrónico, ahí te llegará la confirmación de aceptación de tu solicitud como un nuevo padrino.']);
     	}
+    }
+
+    public function tablaPreAlta(){
+        $padrinos_prealta = METADATO_PADRINOS_PRE_ALTA::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO','CLASIFICGOB_ID','STATUS_4','NO_AHIJADOS','MONTO_AHIJADOS')->paginate(10);
+        $total            = METADATO_PADRINOS_PRE_ALTA::count();
+        $sectores         = LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','ASC')->get();
+        $quincenas        = LU_CAT_QUINCENAS::
+        return view('cedipiem.usuario.padrino.pre-alta.tabla',compact('padrinos_prealta','sectores','total')); 
+        //dd($padrinos_prealta);
     }
 }

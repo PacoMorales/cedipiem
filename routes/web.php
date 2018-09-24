@@ -31,6 +31,8 @@ Route::get('/', function () {
 		Route::post('padrino/nuevo-padrino/iniciativa-privada/app','PRE_ALTA_Controller@nuevoPadrinoIPAPP')->name('padrino.nuevo-ip-app');
 		Route::get('padrino/login/','PRE_ALTA_Controller@vistaLogin')->name('padrino.inicio-login');
 		Route::post('padrino/login/app','PRE_ALTA_Controller@loginPadrinoApp')->name('padrino.login-app');
+
+		Route::get('ver/nuevos-padrinos/pre-alta','PRE_ALTA_Controller@tablaPreAlta')->name('pre-alta.padrinos');
 /**************************************************************************************************************************/
 		Route::get('padrino/municipios','PRE_ALTA_Controller@apiMunicipios')->name('padrino.municipios'); 
 		Route::get('padrino/sectores','PRE_ALTA_Controller@apiSectores')->name('padrino.sectores');
