@@ -299,7 +299,7 @@ class PRE_ALTA_Controller extends Controller
         $padrinos_prealta = METADATO_PADRINOS_PRE_ALTA::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO','CLASIFICGOB_ID','STATUS_4','NO_AHIJADOS','MONTO_AHIJADOS')->paginate(10);
         $total            = METADATO_PADRINOS_PRE_ALTA::count();
         $sectores         = LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','ASC')->get();
-        $quincenas        = LU_CAT_QUINCENAS::
+        //$quincenas        = LU_CAT_QUINCENAS::
         return view('cedipiem.usuario.padrino.pre-alta.tabla',compact('padrinos_prealta','sectores','total')); 
         //dd($padrinos_prealta);
     }
