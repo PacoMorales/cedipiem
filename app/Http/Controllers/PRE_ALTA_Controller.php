@@ -226,16 +226,16 @@ class PRE_ALTA_Controller extends Controller
         //return view('cedipiem.usuario.padrino.app.aviso',compact('programa'));
     }
 
-    public function inicioSesion(Request $request){
-        if($request->rfc == NULL){
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$request->clave)->get();
+    public function inicioSesion($clave, $rfc){
+        if($rfc == NULL){
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$clave)->get();
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$request->clave)->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->get());
             }else{
                 return '565';
             }
         }else{
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$request->clave)->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$clave)->get();
             if($nuevo->count() > 0){
                 return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->get());
             }else{

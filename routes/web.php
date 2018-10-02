@@ -39,6 +39,7 @@ Route::get('/', function () {
 		Route::get('padrino/sectores/estructuras/{id}','PRE_ALTA_Controller@apiEstructura')->name('padrino.estructuras');
 		Route::get('padrino/sectores/estructuras/dependencia/{id}','PRE_ALTA_Controller@apiDependencia')->name('padrino.dependencia');
 		Route::get('padrino/quincenas','PRE_ALTA_Controller@apiQuincenas')->name('padrino.quincenas');
+		Route::get('padrino/login/{clave}/{rfc}','PRE_ALTA_Controller@inicioSesion')->name('padrino.inicio-sesion');
 /**************************************************************************************************************************/
 		Route::resource('usuario','FURWEB_CTRL_ACCESO_13_Controller');
 		Route::resource('padrino','METADATO_PADRINOS_Controller');
