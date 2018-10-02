@@ -227,7 +227,7 @@ class PRE_ALTA_Controller extends Controller
     }
 
     public function inicioSesion($clave, $rfc){
-        if($rfc == NULL){
+        if($rfc == 'NULL' || $rfc == 'null' || $rfc == ''){
             $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$clave)->get();
             if($nuevo->count() > 0){
                 return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->get());
@@ -242,7 +242,6 @@ class PRE_ALTA_Controller extends Controller
                 return '565';
             }
         }
-        return '501';
     }
 
     public function vistaLogin(){
