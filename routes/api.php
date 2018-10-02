@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('padrino/nuevo-padrino/app','PRE_ALTA_Controller@nuevoPadrinoAPP')->name('padrino.nuevo-app');
 Route::post('padrino/nuevo-padrino/iniciativa-privada/app','PRE_ALTA_Controller@nuevoPadrinoIPAPP')->name('padrino.nuevo-ip-app');
+Route::post('padrino/login','PRE_ALTA_Controller@inicioSesion')->name('padrino.inicio-sesion');
 
 /*Route::get('padrino/municipios','PRE_ALTA_Controller@apiMunicipios')->name('padrino.municipios');
 Route::get('padrino/sectores','PRE_ALTA_Controller@apiSectores')->name('padrino.sectores');

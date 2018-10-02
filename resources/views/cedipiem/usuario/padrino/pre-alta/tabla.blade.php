@@ -30,7 +30,10 @@
 							      <th>Ahijado(s)</th>
 							      <th>Descuento</th>
 							      <th>Sector</th>
+							      <th>Deducible</th>
+							      <th>Quincena</th>
 							      <th>St</th>
+							      <th>Mov</th>
 							    </tr>
 							  </thead>
 							  <tbody class="text-md-center">
@@ -47,11 +50,31 @@
 											@break
 										@endif
 									@endforeach
+									@if($padrino->recibo_deducible == 'S')
+										<th>SI</th>
+									@else
+										@if($padrino->recibo_deducible == 'N')
+											<th>NO</th>
+										@else
+											<th>NO APLICA</th>
+										@endif
+									@endif
+									@foreach($quincenas as $quincena)
+										@if($quincena->id_quincena == $padrino->quincena)
+											<th>{{$quincena->desc_quincena}}{{' '}}{{$padrino->quincena_anio}}</th>
+											@break
+										@endif
+										@if($loop->last)
+        										<th>SIN ESPECIFICAR</th>
+        									@endif
+									@endforeach
 									@if($padrino->status_4 == 'E')
 										<th><a href="#" class="btn btn-info" title="Status: En espera"><i class="fa fa-coffee"></i></a></th>
 									@else
 										<th><a href="#" class="btn btn-success" title="Status: Activo"><i class="fa fa-check"></i></a></th>
 									@endif
+									<th><a href="#" class="btn btn-primary" title="Ver"><i class="fa fa-search"></i></a>
+									</tr>
 									</tr>
 								@endforeach
 							  </tbody>

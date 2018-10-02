@@ -226,59 +226,24 @@ class PRE_ALTA_Controller extends Controller
         //return view('cedipiem.usuario.padrino.app.aviso',compact('programa'));
     }
 
-    /*public function nuevoPadrinoIPAPP(Request $request){
-    	//dd($request->all()); 
-    	do{
-            $aux    = mt_rand(5000000,25000000);
-            $var = false;
-            $existe = METADATO_PADRINOS_PRE_ALTA::find($aux);
-            if($existe==NULL){
-                $var = true;
+    public function inicioSesion(Request $request){
+        if($request->rfc == NULL){
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$request->clave)->get();
+            if($nuevo->count() > 0){
+                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$request->clave)->get());
             }else{
-                $var = false;
+                return '565';
             }
-        }while($var == false);
-        if($request->OPCION1 == $request->OPCION2 OR $request->OPCION2 == $request->OPCION3 OR $request->OPCION1 == $request->OPCION3){
-        	return back()->withErrors(['FOLIO' => 'Por favor, elige diferentes municipios a apadrinar.']);
+        }else{
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$request->clave)->get();
+            if($nuevo->count() > 0){
+                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->get());
+            }else{
+                return '565';
+            }
         }
-        $clasif = LU_CLASIFICGOB::where('CLASIFICGOB_DESC','like','%'.$request->SECTOR.'%')->get();
-        $clasificgob=$clasif[0];
-        $estruc = LU_ESTRUCGOB::where('CLASIFICGOB_ID',$clasificgob->clasificgob_id)->where('ESTRUCGOB_DESC','like','%'.$request->ESTRUCTURA.'%')->get();
-        $estrucgob=$estruc[0];
-        $nuevo = new METADATO_PADRINOS_PRE_ALTA();
-        $nuevo->CVE_SP = strtoupper($request->CVE_SERV_PUBLICO);
-        $nuevo->CVE_PADRINO = $aux;
-        $nuevo->CLASIFICGOB_ID = $clasificgob->clasificgob_id;
-        $nuevo->APELLIDO_PATERNO = strtoupper($request->PATERNO);
-        $nuevo->APELLIDO_MATERNO = strtoupper($request->MATERNO);
-        $nuevo->NOMBRES = strtoupper($request->NOMBRES);
-        $nuevo->NOMBRE_COMPLETO = strtoupper($request->PATERNO.' '.$request->MATERNO.' '.$request->NOMBRES);
-        $nuevo->RAZON_SOCIAL = strtoupper($request->RAZON_SOCIAL);
-        $nuevo->REPRESENTANTE = strtoupper($request->REPRESENTANTE);
-        $nuevo->RFC = strtoupper($request->RFC);
-        $nuevo->ESTRUCGOB_ID = $estrucgob->estrucgob_id;
-        $nuevo->CVE_DEPENDENCIA = strtoupper($request->DEPENDENCIA);
-        $nuevo->COLONIA = strtoupper($request->COLONIA);
-        $nuevo->CP = strtoupper($request->CP);
-        $nuevo->DIRECCION_LAB = strtoupper($request->CALLE.' '.$request->NUM_EXT.' '.$request->NUM_INT);
-        $nuevo->LADA_LAB = strtoupper($request->LADA);
-        $nuevo->TELEFONO_LAB = strtoupper($request->TELEFONO);
-        $nuevo->CORREO_ELECT = $request->CORREO;
-        $nuevo->N_PERIODO = date('Y');
-        $nuevo->STATUS_4 = 'E';
-        $nuevo->NO_AHIJADOS = strtoupper($request->AHIJADOS);
-        $nuevo->MONTO_AHIJADOS = $request->AHIJADOS * 150;
-        $nuevo->RECIBO_DEDUCIBLE = strtoupper($request->RECIBO_DEDUCIBLE);
-        $nuevo->CVE_MUNICIPIO_OPC1 = strtoupper($request->OPCION1);
-        $nuevo->CVE_MUNICIPIO_OPC2 = strtoupper($request->OPCION2);
-        $nuevo->CVE_MUNICIPIO_OPC3 = strtoupper($request->OPCION3);
-        $nuevo->FECHA_REG = date('Y/m/d');
-        dd($nuevo);
-        //$nuevo->save();
-        Flash::success("La información del PADRINO: ".$request->NOMBRES." con CLAVE DE PADRINO: ".$aux." fue registrada correctamente.")->important();
-        $programa    = CAT_PROGRAMAS::find(13);
-        return view('cedipiem.usuario.padrino.app.aviso',compact('programa'));
-    }*/
+        return '501';
+    }
 
     public function vistaLogin(){
     	$programa    = CAT_PROGRAMAS::find(13);
@@ -296,11 +261,11 @@ class PRE_ALTA_Controller extends Controller
     }
 
     public function tablaPreAlta(){
-        $padrinos_prealta = METADATO_PADRINOS_PRE_ALTA::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO','CLASIFICGOB_ID','STATUS_4','NO_AHIJADOS','MONTO_AHIJADOS')->paginate(10);
+        $padrinos_prealta = METADATO_PADRINOS_PRE_ALTA::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO','CLASIFICGOB_ID','STATUS_4','NO_AHIJADOS','MONTO_AHIJADOS','RECIBO_DEDUCIBLE','QUINCENA','QUINCENA_ANIO')->paginate(10);
         $total            = METADATO_PADRINOS_PRE_ALTA::count();
         $sectores         = LU_CLASIFICGOB::orderBy('CLASIFICGOB_ID','ASC')->get();
-        //$quincenas        = LU_CAT_QUINCENAS::
-        return view('cedipiem.usuario.padrino.pre-alta.tabla',compact('padrinos_prealta','sectores','total')); 
+        $quincenas        = LU_CAT_QUINCENAS::select('ID_QUINCENA','DESC_QUINCENA')->orderBy('ID_QUINCENA','ASC')->get();
+        return view('cedipiem.usuario.padrino.pre-alta.tabla',compact('padrinos_prealta','sectores','total','quincenas')); 
         //dd($padrinos_prealta);
     }
 }
