@@ -235,9 +235,9 @@ class PRE_ALTA_Controller extends Controller
                 return '565';
             }
         }else{
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$clave)->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like','%'.$clave)->where('RFC','like','%'.$rfc)->get();
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRES')->where('CVE_SP','like','%'.$clave)->where('RFC','like','%'.$rfc)->get());
             }else{
                 return '565';
             }
