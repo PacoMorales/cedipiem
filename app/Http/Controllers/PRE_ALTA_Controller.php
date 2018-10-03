@@ -228,18 +228,24 @@ class PRE_ALTA_Controller extends Controller
 
     public function inicioSesion($clave, $rfc){
         if($rfc == 'NULL' || $rfc == 'null' || $rfc == ''){
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->first();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO','STATUS_1')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->first();
             //var_dump($nuevo); die;
             //dd($nuevo);
+            if($nuevo == null){
+                return '575';
+            }
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->get());
             }else{
                 return '565';
             }
         }else{
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->where('STATUS_1','like','A%')->get();
+            if($nuevo == null){
+                return '575';
+            }
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->where('STATUS_1','like','A%')->get());
             }else{
                 return '565';
             }
