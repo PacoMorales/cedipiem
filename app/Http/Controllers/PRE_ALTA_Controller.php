@@ -232,14 +232,14 @@ class PRE_ALTA_Controller extends Controller
             //var_dump($nuevo); die;
             //dd($nuevo);
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->get());
             }else{
                 return '565';
             }
         }else{
             $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->get();
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->get());
             }else{
                 return '565';
             }
