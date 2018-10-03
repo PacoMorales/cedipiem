@@ -228,14 +228,16 @@ class PRE_ALTA_Controller extends Controller
 
     public function inicioSesion($clave, $rfc){
         if($rfc == 'NULL' || $rfc == 'null' || $rfc == ''){
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like',$clave.'%')->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->first();
+            //var_dump($nuevo); die;
+            //dd($nuevo);
             if($nuevo->count() > 0){
                 return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->get());
             }else{
                 return '565';
             }
         }else{
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->get();
             if($nuevo->count() > 0){
                 return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get());
             }else{
