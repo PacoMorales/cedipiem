@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\FURWEB_METADATO_13;
 
 class ASIGNACION_PADRINO_AHIJADO extends Model
 {
@@ -39,4 +40,16 @@ class ASIGNACION_PADRINO_AHIJADO extends Model
 	    'OBS_1',
 	    'OBS_2'
     ];
+
+    public static function Ahijado($clave){
+    	//FURWEB_METADATO_13 contiene a todos los ahijados
+    	//METADATO_PADRINOS contiene a todos los padrinos
+    	return ASIGNACION_PADRINO_AHIJADO::join('FURWEB_METADATO_13','ASIGNACION_PADRINO_AHIJADO.FOLIO','=','FURWEB_METADATO_13.FOLIO')
+    										->selectRaw('FURWEB_METADATO_13.NOMBRE_COMPLETO, FURWEB_METADATO_13.COLONIA, FURWEB_METADATO_13.NOMBRE_COMPLETO_C, FURWEB_METADATO_13.COLONIA_C, FURWEB_METADATO_13.TELEFONO_C, FURWEB_METADATO_13.FAX_C')
+    										->where('ASIGNACION_PADRINO_AHIJADO.CVE_PADRINO',$clave)
+    										->where('FURWEB_METADATO_13.N_PERIODO',2018)
+    										->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
+    										->get();
+
+    }
 }

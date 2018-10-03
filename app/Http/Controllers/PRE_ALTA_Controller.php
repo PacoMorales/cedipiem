@@ -230,18 +230,22 @@ class PRE_ALTA_Controller extends Controller
         if($rfc == 'NULL' || $rfc == 'null' || $rfc == ''){
             $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like',$clave.'%')->get();
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->get());
             }else{
                 return '565';
             }
         }else{
             $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get();
             if($nuevo->count() > 0){
-                return response()->json(METADATO_PADRINOS::select('CVE_SP','CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get());
+                return response()->json(METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_SP','like',$clave.'%')->where('RFC','like',$rfc.'%')->get());
             }else{
                 return '565';
             }
         }
+    }
+
+    public function obtenerAhijado($clave){
+        return response()->json(ASIGNACION_PADRINO_AHIJADO::Ahijado($clave));
     }
 
     public function vistaLogin(){
