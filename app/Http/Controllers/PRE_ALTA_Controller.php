@@ -253,7 +253,18 @@ class PRE_ALTA_Controller extends Controller
     }
 
     public function obtenerAhijado($clave){
-        return response()->json(ASIGNACION_PADRINO_AHIJADO::Ahijado($clave));
+        $hijo = ASIGNACION_PADRINO_AHIJADO::join('FURWEB_METADATO_13','ASIGNACION_PADRINO_AHIJADO.FOLIO','=','FURWEB_METADATO_13.FOLIO')
+                                            ->select('FURWEB_METADATO_13.NOMBRE_COMPLETO')
+                                            ->where('ASIGNACION_PADRINO_AHIJADO.CVE_PADRINO',$clave)
+                                            ->where('FURWEB_METADATO_13.N_PERIODO',2018)
+                                            ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
+                                            ->get();
+        if($hijo == NULL OR $hijo->count() < 1){
+            return '510';
+        }else{
+            return response()->json(ASIGNACION_PADRINO_AHIJADO::Ahijado($clave));
+        }
+        return '510';
     }
 
     public function vistaLogin(){
