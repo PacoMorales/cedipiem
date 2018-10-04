@@ -20,6 +20,7 @@ class FURWEB_METADATO_13 extends Model
 	    'NOMBRES',
 	    'NOMBRE_COMPLETO',
 	    'FECHA_NACIMIENTO',
-	    'SEXO'
+	    'SEXO',
+	    'CVE_MUNICIPIO'
     ];
 }
