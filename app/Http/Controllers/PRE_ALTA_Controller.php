@@ -235,6 +235,7 @@ class PRE_ALTA_Controller extends Controller
             if($nuevo->count() > 0){
                 $usuario = METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->first();
                 $usuario->nombre_completo = mb_convert_case($usuario->nombre_completo, MB_CASE_TITLE, "UTF-8");
+                dd($usuario);
                 return response()->json($usuario);
             }else{
                 return '565';
