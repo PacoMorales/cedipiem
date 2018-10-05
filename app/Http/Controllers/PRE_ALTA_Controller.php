@@ -268,10 +268,10 @@ class PRE_ALTA_Controller extends Controller
             $municipio = mb_convert_case($hijo[0]->municipionombre, MB_CASE_TITLE, "UTF-8");
             $nombrec = mb_convert_case($hijo[0]->nombre_completo_c, MB_CASE_TITLE, "UTF-8");
             $ahijado = new ASIGNACION_PADRINO_AHIJADO();
-            $ahijado->NOMBRE_COMPLETO = $nombre;
-            $ahijado->SEXO = $hijo[0]->sexo;
-            $ahijado->MUNICIPIONOMBRE = $municipio;
-            $ahijado->NOMBRE_COMPLETO_C = $nombrec;
+            $ahijado->nombre_completo = $nombre;
+            $ahijado->sexo = $hijo[0]->sexo;
+            $ahijado->municipionombre = $municipio;
+            $ahijado->nombre_completo_c = $nombrec;
             return response()->json($ahijado);
         }
         return '510';
