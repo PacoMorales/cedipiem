@@ -254,15 +254,25 @@ class PRE_ALTA_Controller extends Controller
 
     public function obtenerAhijado($clave){
         $hijo = ASIGNACION_PADRINO_AHIJADO::join('FURWEB_METADATO_13','ASIGNACION_PADRINO_AHIJADO.FOLIO','=','FURWEB_METADATO_13.FOLIO')
-                                            ->select('FURWEB_METADATO_13.NOMBRE_COMPLETO')
+                                            ->join('CAT_MUNICIPIOS_SEDESEM','FURWEB_METADATO_13.CVE_MUNICIPIO','=','CAT_MUNICIPIOS_SEDESEM.MUNICIPIOID')
+                                            ->selectRaw('FURWEB_METADATO_13.NOMBRE_COMPLETO, FURWEB_METADATO_13.SEXO, CAT_MUNICIPIOS_SEDESEM.MUNICIPIONOMBRE, FURWEB_METADATO_13.NOMBRE_COMPLETO_C')
                                             ->where('ASIGNACION_PADRINO_AHIJADO.CVE_PADRINO',$clave)
+                                            ->where('CAT_MUNICIPIOS_SEDESEM.ENTIDADFEDERATIVAID',15)
                                             ->where('FURWEB_METADATO_13.N_PERIODO',2018)
                                             ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
                                             ->get();
         if($hijo == NULL OR $hijo->count() < 1){
             return '510';
         }else{
-            return response()->json(ASIGNACION_PADRINO_AHIJADO::Ahijado($clave));
+            $nombre = mb_convert_case($hijo[0]->nombre_completo, MB_CASE_TITLE, "UTF-8");
+            $municipio = mb_convert_case($hijo[0]->municipionombre, MB_CASE_TITLE, "UTF-8");
+            $nombrec = mb_convert_case($hijo[0]->nombre_completo_c, MB_CASE_TITLE, "UTF-8");
+            $ahijado = new ASIGNACION_PADRINO_AHIJADO();
+            $ahijado->NOMBRE_COMPLETO = $nombre;
+            $ahijado->SEXO = $hijo[0]->sexo;
+            $ahijado->MUNICIPIONOMBRE = $municipio;
+            $ahijado->NOMBRE_COMPLETO_C = $nombrec;
+            return response()->json($ahijado);
         }
         return '510';
     }
