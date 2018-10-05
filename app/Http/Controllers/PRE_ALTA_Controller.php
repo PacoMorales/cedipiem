@@ -228,26 +228,24 @@ class PRE_ALTA_Controller extends Controller
 
     public function inicioSesion($clave, $rfc){
         if($rfc == 'NULL' || $rfc == 'null' || $rfc == ''){
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO','STATUS_1')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->first();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->first();
             if($nuevo == null){
                 return '575';
             }
             if($nuevo->count() > 0){
-                $usuario = METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('STATUS_1','like','A%')->first();
-                $usuario->nombre_completo = mb_convert_case($usuario->nombre_completo, MB_CASE_TITLE, "UTF-8");
-                return response()->json($usuario);
+                $nuevo->nombre_completo = mb_convert_case($nuevo->nombre_completo, MB_CASE_TITLE, "UTF-8");
+                return response()->json($nuevo);
             }else{
                 return '565';
             }
         }else{
-            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->where('STATUS_1','like','A%')->get();
+            $nuevo = METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->where('STATUS_1','like','A%')->first();
             if($nuevo == null){
                 return '575';
             }
             if($nuevo->count() > 0){
-                $usuario = METADATO_PADRINOS::select('CVE_PADRINO','NOMBRE_COMPLETO')->where('CVE_PADRINO', $clave)->where('RFC','like',$rfc.'%')->where('STATUS_1','like','A%')->first();
-                $usuario->nombre_completo = mb_convert_case($usuario->nombre_completo, MB_CASE_TITLE, "UTF-8");
-                return response()->json($usuario);
+                $nuevo->nombre_completo = mb_convert_case($nuevo->nombre_completo, MB_CASE_TITLE, "UTF-8");
+                return response()->json($nuevo);
             }else{
                 return '565';
             }
