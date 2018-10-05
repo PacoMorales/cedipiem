@@ -264,15 +264,13 @@ class PRE_ALTA_Controller extends Controller
         if($hijo == NULL OR $hijo->count() < 1){
             return '510';
         }else{
-            $nombre = mb_convert_case($hijo[0]->nombre_completo, MB_CASE_TITLE, "UTF-8");
-            $municipio = mb_convert_case($hijo[0]->municipionombre, MB_CASE_TITLE, "UTF-8");
-            $nombrec = mb_convert_case($hijo[0]->nombre_completo_c, MB_CASE_TITLE, "UTF-8");
-            $ahijado = new ASIGNACION_PADRINO_AHIJADO();
-            $ahijado->nombre_completo = $nombre;
-            $ahijado->sexo = $hijo[0]->sexo;
-            $ahijado->municipionombre = $municipio;
-            $ahijado->nombre_completo_c = $nombrec;
-            return response()->json($ahijado);
+            for($i=0;$i<$hijo->count();$i++){
+                $hijo[$i]->nombre_completo = mb_convert_case($hijo[$i]->nombre_completo, MB_CASE_TITLE, "UTF-8");
+                $hijo[$i]->sexo = $hijo[$i]->sexo;
+                $hijo[$i]->municipionombre = mb_convert_case($hijo[$i]->municipionombre, MB_CASE_TITLE, "UTF-8");
+                $hijo[$i]->nombre_completo_c = mb_convert_case($hijo[$i]->nombre_completo_c, MB_CASE_TITLE, "UTF-8");
+            }
+            return response()->json($hijo);
         }
         return '510';
     }
