@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FURWEB_METADATO_13 extends Model
 {
-    protected $table = 'METADATO_PADRINOS';
+    protected $table = 'FURWEB_METADATO_13';
     protected  $primaryKey = 'CVE_PADRINO';
     public $timestamps = false;
     public $incrementing = false;
@@ -21,6 +21,7 @@ class FURWEB_METADATO_13 extends Model
 	    'NOMBRE_COMPLETO',
 	    'FECHA_NACIMIENTO',
 	    'SEXO',
-	    'CVE_MUNICIPIO'
+	    'CVE_MUNICIPIO',
+	    'CVE_REGION'
     ];
 }

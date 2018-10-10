@@ -16,6 +16,10 @@ Route::get('/', function () {
 });
 
 	Route::group(['prefix' => 'sedesem'], function(){
+
+		Route::get('ver/graficos','PRE_ALTA_Controller@Stock')->name('stock');
+		Route::get('obtener/resultados/consulta','PRE_ALTA_Controller@StockURL')->name('stockurl');
+
 		Route::get('/dependencias/{$id}','METADATO_PADRINOS_Controller@selectDependencia')->name('padrino.obtdep');
 		Route::get('padrino/estructura/{id}','METADATO_PADRINOS_Controller@selectEstructura')->name('padrino.est');
 		Route::get('padrino/mantenimiento/','METADATO_PADRINOS_Controller@generarTabla')->name('padrino.ver');

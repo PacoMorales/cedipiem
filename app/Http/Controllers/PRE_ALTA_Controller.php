@@ -7,6 +7,7 @@ use App\Http\Requests\METADATO_PADRINOS_Request;
 use Laracasts\Flash\Flash;
 use App\LU_CLASIFICGOB;
 use App\METADATO_PADRINOS;
+use App\FURWEB_METADATO_13;
 use App\METADATO_PADRINOS_PRE_ALTA;
 use App\FURWEB_DIARIO_13;
 use App\ASIGNACION_PADRINO_AHIJADO;
@@ -14,6 +15,7 @@ use App\CAT_PROGRAMAS;
 use App\CAT_MESES;
 use App\CAT_GRADO_ESTUDIOS;
 use App\CAT_MUNICIPIOS_SEDESEM;
+use App\CAT_REGIONES_SEDESEM;
 use App\CAT_MUNICIPIOS;
 use App\LU_ESTRUCGOB;
 use App\LU_CAT_QUINCENAS;
@@ -297,5 +299,51 @@ class PRE_ALTA_Controller extends Controller
         $quincenas        = LU_CAT_QUINCENAS::select('ID_QUINCENA','DESC_QUINCENA')->orderBy('ID_QUINCENA','ASC')->get();
         return view('cedipiem.usuario.padrino.pre-alta.tabla',compact('padrinos_prealta','sectores','total','quincenas')); 
         //dd($padrinos_prealta);
+    }
+
+    public function Stock(){
+        $resultSetRegiones = CAT_REGIONES_SEDESEM::select('REGIONID','REGIONDESCRIPCION')
+                                                    ->where('REGIONID','>',0)
+                                                    ->orderBy('REGIONID','ASC')
+                                                    ->get();
+        //dd($resultSetRegiones->count());
+        for($i=0;$i<$resultSetRegiones->count();$i++){
+            /*$resultSetAhijados[$i] = FURWEB_METADATO_13::selectRaw('CVE_REGION,count(CVE_REGION)')
+                                                    ->where('CVE_REGION',$resultSetRegiones[$i]->regionid)
+                                                    ->groupBy('CVE_REGION')
+                                                    ->get();*/
+            $total = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.FOLIO','=','SEDESEM_13.FOLIO')
+                                                    //->join('CAT_REGIONES_SEDESEM','FURWEB_METADATO_13.CVE_REGION','=','CAT_REGIONES_SEDESEM.REGIONID')
+                                                    //->selectRaw('FURWEB_METADATO_13.CVE_REGION,count(FURWEB_METADATO_13.CVE_REGION)')
+                                                    ->selectRaw('FURWEB_METADATO_13.CVE_REGION as region,count(FURWEB_METADATO_13.CVE_REGION) as total')
+                                                    ->where('FURWEB_METADATO_13.CVE_REGION',$resultSetRegiones[$i]->regionid)
+                                                    //->where('CAT_REGIONES_SEDESEM.REGIONID',$resultSetRegiones[$i]->regionid)
+                                                    ->where('FURWEB_METADATO_13.N_PERIODO',2018)
+                                                    ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
+                                                    ->groupBy('FURWEB_METADATO_13.CVE_REGION')
+                                                    //->groupBy('CAT_REGIONES_SEDESEM.REGIONID')
+                                                    ->get();
+                                                    //dd($total);
+            if($total->count()<=0 || $total==NULL){
+                $aux = new FURWEB_METADATO_13();
+                $aux->ide = (string)($i+1);
+                $aux->region = $resultSetRegiones[$i]->regiondescripcion;
+                $aux->total = "0";
+                $resultSetAhijados[$i][0] = $aux;
+            }
+            else{
+                $aux = new FURWEB_METADATO_13();
+                $aux->ide = $total[0]->region;
+                $aux->region = $resultSetRegiones[$i]->regiondescripcion;
+                $aux->total = $total[0]->total;
+                //$aux->total = "1";
+                $resultSetAhijados[$i][0] = $aux;
+            }
+        }
+        return response()->json($resultSetAhijados);
+    }
+
+    public function StockURL(){
+        return view('graficos.stock');
     }
 }
