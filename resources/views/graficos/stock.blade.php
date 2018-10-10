@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Padrinos por Región</title>
+        <title>Beneficiarios por Región</title>
 
         <!-- Fonts -->
         <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
@@ -15,11 +15,11 @@
     </head>
     <body>
       <div class="row">
-       <div class="col-md-10 col-md-offset-1">
+       <div class="col-md-11 col-md-offset-1">
            <div class="panel panel-default">
-               <div class="panel-heading"><b>Gráfica de Padrinos por Región</b></div>
+               <div class="panel-heading"><b>Gráfica de Beneficiarios por Región</b></div>
                <div class="panel-body">
-                   <canvas id="canvas" height="280" width="600"></canvas>
+                   <canvas id="canvas" height="450" width="980"></canvas>
                </div>
            </div>
        </div>
@@ -56,17 +56,62 @@
             });
             var ctx = document.getElementById("canvas").getContext('2d');
                 var myChart = new Chart(ctx, {
-                  type: 'bar',
+                  type: 'horizontalBar',
                   data: {
                       //labels:Years,
-                      //labels:ids,
-                      labels:regiones,
+                      //labels:[ids[0],ids[1]],
+                      labels:[regiones[0],regiones[1],regiones[2],regiones[3],regiones[4],regiones[5],regiones[6],regiones[7],regiones[8],regiones[9],regiones[10],regiones[11],regiones[12],regiones[13],regiones[14],regiones[15],regiones[16],regiones[17],regiones[18],regiones[19]],
+                      //labels:regiones,
                       datasets: [{
-                          label: 'Padrinos por Regiones',
+                          label: 'Beneficiarios por Regiones',
                           //data: Prices,
                           data: total,
-                          borderWidth: 1,
-                          backgroundColor: ['red','blue','green','gray','yellow','orange','brown','pink','purple','silver','red','blue','green','gray','yellow','orange','brown','pink','purple','silver']
+                          backgroundColor: [
+                            'rgba(0, 99, 132, 0.6)',
+                            'rgba(15, 99, 132, 0.6)',
+                            'rgba(30, 99, 132, 0.6)',
+                            'rgba(45, 99, 132, 0.6)',
+                            'rgba(60, 99, 132, 0.6)',
+                            'rgba(75, 99, 132, 0.6)',
+                            'rgba(90, 99, 132, 0.6)',
+                            'rgba(105, 99, 132, 0.6)',
+                            'rgba(120, 99, 132, 0.6)',
+                            'rgba(135, 99, 132, 0.6)',
+                            'rgba(150, 99, 132, 0.6)',
+                            'rgba(165, 99, 132, 0.6)',
+                            'rgba(180, 99, 132, 0.6)',
+                            'rgba(195, 99, 132, 0.6)',
+                            'rgba(210, 99, 132, 0.6)',
+                            'rgba(225, 99, 132, 0.6)',
+                            'rgba(240, 99, 132, 0.6)',
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(270, 99, 132, 0.6)',
+                            'rgba(285, 99, 132, 0.6)'],
+                          borderColor: [
+                            'rgba(0, 99, 132, 1)',
+                            'rgba(15, 99, 132, 1)',
+                            'rgba(30, 99, 132, 1)',
+                            'rgba(45, 99, 132, 1)',
+                            'rgba(60, 99, 132, 1)',
+                            'rgba(75, 99, 132, 1)',
+                            'rgba(90, 99, 132, 1)',
+                            'rgba(105, 99, 132, 1)',
+                            'rgba(120, 99, 132, 1)',
+                            'rgba(135, 99, 132, 1)',
+                            'rgba(150, 99, 132, 1)',
+                            'rgba(165, 99, 132, 1)',
+                            'rgba(180, 99, 132, 1)',
+                            'rgba(195, 99, 132, 1)',
+                            'rgba(210, 99, 132, 1)',
+                            'rgba(225, 99, 132, 1)',
+                            'rgba(240, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(270, 99, 132, 1)',
+                            'rgba(285, 99, 132, 1)',
+                          ],
+                          borderWidth: 2,
+                          hoverBorderWidth: 0
+                          //backgroundColor: ['red','blue','green','gray','yellow','orange','brown','pink','purple','silver','red','blue','green','gray','yellow','orange','brown','pink','purple','silver']
                       }]
                   },
                   options: {
