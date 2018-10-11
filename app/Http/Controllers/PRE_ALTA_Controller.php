@@ -312,7 +312,7 @@ class PRE_ALTA_Controller extends Controller
                                                     ->where('CVE_REGION',$resultSetRegiones[$i]->regionid)
                                                     ->groupBy('CVE_REGION')
                                                     ->get();*/
-            $total = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.FOLIO','=','SEDESEM_13.FOLIO')
+            /*$total = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.FOLIO','=','SEDESEM_13.FOLIO')
                                                     //->join('CAT_REGIONES_SEDESEM','FURWEB_METADATO_13.CVE_REGION','=','CAT_REGIONES_SEDESEM.REGIONID')
                                                     //->selectRaw('FURWEB_METADATO_13.CVE_REGION,count(FURWEB_METADATO_13.CVE_REGION)')
                                                     ->selectRaw('FURWEB_METADATO_13.CVE_REGION as region,count(FURWEB_METADATO_13.CVE_REGION) as total')
@@ -322,8 +322,23 @@ class PRE_ALTA_Controller extends Controller
                                                     ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
                                                     ->groupBy('FURWEB_METADATO_13.CVE_REGION')
                                                     //->groupBy('CAT_REGIONES_SEDESEM.REGIONID')
-                                                    ->get();
+                                                    ->get();*/
                                                     //dd($total);
+            $total = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.FOLIO','=','SEDESEM_13.FOLIO')
+                                                    ->join('FURWEB_METADATO_STATUS_13','FURWEB_METADATO_13.FOLIO','=','FURWEB_METADATO_STATUS_13.FOLIO')
+                                                    //->selectRaw('FURWEB_METADATO_13.CVE_REGION,count(FURWEB_METADATO_13.CVE_REGION)')
+                                                    ->selectRaw('FURWEB_METADATO_13.CVE_REGION as region,count(FURWEB_METADATO_13.CVE_REGION) as total')
+                                                    ->where('FURWEB_METADATO_13.CVE_REGION',$resultSetRegiones[$i]->regionid)
+                                                    //->where('CAT_REGIONES_SEDESEM.REGIONID',$resultSetRegiones[$i]->regionid)
+                                                    ->where('FURWEB_METADATO_13.N_PERIODO',2018)
+                                                    ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
+                                                    ->where('SEDESEM_13.CVE_PROGRAMA',13)
+                                                    ->where('SEDESEM_13.N_PERIODO',2018)
+                                                    ->where('FURWEB_METADATO_STATUS_13.CVE_PROGRAMA',13)
+                                                    ->whereRaw('FURWEB_METADATO_STATUS_13.STATUS_P1_01 = 0 OR FURWEB_METADATO_STATUS_13.STATUS_P1_01 is null')
+                                                    ->groupBy('FURWEB_METADATO_13.CVE_REGION')
+                                                    //->groupBy('CAT_REGIONES_SEDESEM.REGIONID')
+                                                    ->get();
             if($total->count()<=0 || $total==NULL){
                 $aux = new FURWEB_METADATO_13();
                 $aux->ide = (string)($i+1);
@@ -345,5 +360,54 @@ class PRE_ALTA_Controller extends Controller
 
     public function StockURL(){
         return view('graficos.stock');
+    }
+
+    public function stockPie(){
+        $meses = CAT_MESES::all();
+        return view('graficos.pie_inicio',compact('meses'));
+    }
+
+    public function stockPostPie(Request $request){
+        //dd($request->all());
+        $resultSetRegiones = CAT_REGIONES_SEDESEM::select('REGIONID','REGIONDESCRIPCION')
+                                                    ->where('REGIONID','>',0)
+                                                    ->orderBy('REGIONID','ASC')
+                                                    ->get();
+        dd($resultSetRegiones);
+        for($i=0;$i<$resultSetRegiones->count();$i++){
+            $resultSetEscuelas = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.','=','SEDESEM_13.N_PERIODO')
+                                                    ->join('FURWEB_METADATO_STATUS_13','FURWEB_METADATO_13.FOLIO','=','FURWEB_METADATO_STATUS_13.FOLIO')
+                                                    ->join('FURWEB_CALCULONOMINA_13','FURWEB_METADATO_13.FOLIO','=','FURWEB_CALCULONOMINA_13.FOLIO')
+                                                    ->selectRaw('FURWEB_METADATO_13.CVE_REGION as region,count(FURWEB_METADATO_13.CVE_REGION) as total')
+                                                    ->where('FURWEB_METADATO_13.CVE_REGION',$resultSetRegiones[$i]->regionid)
+                                                    ->where('FURWEB_METADATO_13.N_PERIODO',$request->periodo)
+                                                    ->where('FURWEB_METADATO_13.CVE_PROGRAMA',$request->programa)
+                                                    ->where('SEDESEM_13.CVE_PROGRAMA',$request->programa)
+                                                    ->where('SEDESEM_13.N_PERIODO',$request->periodo)
+                                                    ->where('FURWEB_CALCULONOMINA_13.N_PERIODO',$request->periodo)
+                                                    ->where('FURWEB_CALCULONOMINA_13.CVE_PROGRAMA',$request->programa)
+                                                    ->where('FURWEB_CALCULONOMINA_13.MES_TRX',$request->mes)
+                                                    ->where('FURWEB_METADATO_STATUS_13.CVE_PROGRAMA',$request->programa)
+                                                    ->whereRaw('FURWEB_METADATO_STATUS_13.STATUS_P1_01 = 0 OR FURWEB_METADATO_STATUS_13.STATUS_P1_01 is null')
+                                                    ->groupBy('FURWEB_METADATO_13.CVE_REGION')
+                                                    ->get();
+
+            /*$total = FURWEB_METADATO_13::join('SEDESEM_13','FURWEB_METADATO_13.FOLIO','=','SEDESEM_13.FOLIO')
+                                                    ->join('FURWEB_METADATO_STATUS_13','FURWEB_METADATO_13.FOLIO','=','FURWEB_METADATO_STATUS_13.FOLIO')
+                                                    //->selectRaw('FURWEB_METADATO_13.CVE_REGION,count(FURWEB_METADATO_13.CVE_REGION)')
+                                                    ->selectRaw('FURWEB_METADATO_13.CVE_REGION as region,count(FURWEB_METADATO_13.CVE_REGION) as total')
+                                                    ->where('FURWEB_METADATO_13.CVE_REGION',$resultSetRegiones[$i]->regionid)
+                                                    //->where('CAT_REGIONES_SEDESEM.REGIONID',$resultSetRegiones[$i]->regionid)
+                                                    ->where('FURWEB_METADATO_13.N_PERIODO',2018)
+                                                    ->where('FURWEB_METADATO_13.CVE_PROGRAMA',13)
+                                                    ->where('SEDESEM_13.CVE_PROGRAMA',13)
+                                                    ->where('SEDESEM_13.N_PERIODO',2018)
+                                                    ->where('FURWEB_METADATO_STATUS_13.CVE_PROGRAMA',13)
+                                                    ->whereRaw('FURWEB_METADATO_STATUS_13.STATUS_P1_01 = 0 OR FURWEB_METADATO_STATUS_13.STATUS_P1_01 is null')
+                                                    ->groupBy('FURWEB_METADATO_13.CVE_REGION')
+                                                    //->groupBy('CAT_REGIONES_SEDESEM.REGIONID')
+                                                    ->get();*/
+        }
+        dd($resultSetEscuelas);
     }
 }

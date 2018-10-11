@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 		Route::get('ver/graficos','PRE_ALTA_Controller@Stock')->name('stock');
 		Route::get('obtener/resultados/consulta','PRE_ALTA_Controller@StockURL')->name('stockurl');
+		Route::get('obtener/resultados/niveles','PRE_ALTA_Controller@stockPie')->name('escolar');
+		Route::get('obtener/resultados/nivel/escolar','PRE_ALTA_Controller@stockPostPie')->name('nivelescolar');
 
 		Route::get('/dependencias/{$id}','METADATO_PADRINOS_Controller@selectDependencia')->name('padrino.obtdep');
 		Route::get('padrino/estructura/{id}','METADATO_PADRINOS_Controller@selectEstructura')->name('padrino.est');
